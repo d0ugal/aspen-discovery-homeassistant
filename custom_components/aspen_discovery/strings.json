@@ -1,0 +1,25 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Aspen Discovery Library",
+                "data": {
+                    "url": "Library catalogue URL",
+                    "username": "Library card number",
+                    "password": "PIN / Password"
+                },
+                "data_description": {
+                    "url": "The base URL of your library catalogue, e.g. https://catalog.yourlibrary.org"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Unable to connect to the library catalogue",
+            "invalid_auth": "Invalid library card number or PIN",
+            "unknown": "Unexpected error"
+        },
+        "abort": {
+            "already_configured": "This account is already configured"
+        }
+    }
+}

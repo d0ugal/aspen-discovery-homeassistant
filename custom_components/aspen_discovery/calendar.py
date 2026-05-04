@@ -1,0 +1,85 @@
+from __future__ import annotations
+
+import datetime
+
+from homeassistant.components.calendar import CalendarEntity, CalendarEvent
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from .const import DOMAIN
+from .coordinator import AspenDiscoveryCoordinator
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    coordinator: AspenDiscoveryCoordinator = hass.data[DOMAIN][entry.entry_id]
+    async_add_entities([AspenDiscoveryCalendar(coordinator, entry)])
+
+
+def _checkout_to_event(checkout: dict) -> CalendarEvent | None:
+    due_ts = checkout.get("dueDate")
+    if not due_ts:
+        return None
+    due = datetime.date.fromtimestamp(int(due_ts))
+    return CalendarEvent(
+        start=due,
+        end=due + datetime.timedelta(days=1),
+        summary=checkout.get("title", "Library item"),
+        description=checkout.get("author") or "",
+    )
+
+
+class AspenDiscoveryCalendar(CoordinatorEntity[AspenDiscoveryCoordinator], CalendarEntity):
+    _attr_has_entity_name = True
+    _attr_name = "Due dates"
+
+    def __init__(
+        self, coordinator: AspenDiscoveryCoordinator, entry: ConfigEntry
+    ) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{entry.entry_id}_calendar"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, entry.entry_id)},
+            name=entry.title,
+            manufacturer="Aspen Discovery",
+        )
+
+    @property
+    def event(self) -> CalendarEvent | None:
+        today = datetime.date.today()
+        upcoming = [
+            c
+            for c in self.coordinator.data.checkouts
+            if c.get("dueDate")
+            and datetime.date.fromtimestamp(int(c["dueDate"])) >= today
+        ]
+        if not upcoming:
+            return None
+        soonest = min(upcoming, key=lambda c: c["dueDate"])
+        return _checkout_to_event(soonest)
+
+    async def async_get_events(
+        self,
+        hass: HomeAssistant,
+        start_date: datetime.datetime,
+        end_date: datetime.datetime,
+    ) -> list[CalendarEvent]:
+        start = start_date.date()
+        end = end_date.date()
+        events = []
+        for checkout in self.coordinator.data.checkouts:
+            due_ts = checkout.get("dueDate")
+            if not due_ts:
+                continue
+            due = datetime.date.fromtimestamp(int(due_ts))
+            if start <= due < end:
+                event = _checkout_to_event(checkout)
+                if event:
+                    events.append(event)
+        return events

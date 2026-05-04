@@ -1,0 +1,13 @@
+{
+    "domain": "aspen_discovery",
+    "name": "Aspen Discovery",
+    "codeowners": [
+        "@d0ugal"
+    ],
+    "config_flow": true,
+    "documentation": "https://github.com/d0ugal/aspen-discovery-homeassistant",
+    "iot_class": "cloud_polling",
+    "issue_tracker": "https://github.com/d0ugal/aspen-discovery-homeassistant/issues",
+    "requirements": [],
+    "version": "0.1.0"
+}
