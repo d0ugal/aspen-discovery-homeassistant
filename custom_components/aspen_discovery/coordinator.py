@@ -10,7 +10,11 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .api import AspenDiscoveryAuthError, AspenDiscoveryClient, AspenDiscoveryConnectionError
+from .api import (
+    AspenDiscoveryAuthError,
+    AspenDiscoveryClient,
+    AspenDiscoveryConnectionError,
+)
 from .const import CONF_PASSWORD, CONF_URL, CONF_USERNAME, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -28,7 +32,7 @@ class AspenDiscoveryCoordinator(DataUpdateCoordinator[AspenDiscoveryData]):
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(hours=1),
+            update_interval=timedelta(hours=3),
         )
         self.client = AspenDiscoveryClient(
             base_url=entry.data[CONF_URL],
