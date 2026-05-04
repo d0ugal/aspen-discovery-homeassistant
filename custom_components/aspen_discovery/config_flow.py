@@ -7,7 +7,11 @@ from urllib.parse import urlparse
 import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 
-from .api import AspenDiscoveryAuthError, AspenDiscoveryClient, AspenDiscoveryConnectionError
+from .api import (
+    AspenDiscoveryAuthError,
+    AspenDiscoveryClient,
+    AspenDiscoveryConnectionError,
+)
 from .const import CONF_PASSWORD, CONF_URL, CONF_USERNAME, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -31,7 +35,9 @@ def _normalise_url(url: str) -> str:
 class AspenDiscoveryConfigFlow(ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
-    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+    async def async_step_user(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
         errors: dict[str, str] = {}
 
         if user_input is not None:

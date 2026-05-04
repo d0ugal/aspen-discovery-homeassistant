@@ -43,11 +43,15 @@ def _checkout_to_event(checkout: dict) -> CalendarEvent | None:
     )
 
 
-class AspenDiscoveryCalendar(CoordinatorEntity[AspenDiscoveryCoordinator], CalendarEntity):
+class AspenDiscoveryCalendar(
+    CoordinatorEntity[AspenDiscoveryCoordinator], CalendarEntity
+):
     _attr_has_entity_name = True
     _attr_name = "Due dates"
 
-    def __init__(self, coordinator: AspenDiscoveryCoordinator, entry: ConfigEntry) -> None:
+    def __init__(
+        self, coordinator: AspenDiscoveryCoordinator, entry: ConfigEntry
+    ) -> None:
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_calendar"
         self._attr_device_info = DeviceInfo(
@@ -58,10 +62,14 @@ class AspenDiscoveryCalendar(CoordinatorEntity[AspenDiscoveryCoordinator], Calen
 
     @property
     def event(self) -> CalendarEvent | None:
-        checkouts_with_due = [c for c in self.coordinator.data.checkouts if c.get("dueDate")]
+        checkouts_with_due = [
+            c for c in self.coordinator.data.checkouts if c.get("dueDate")
+        ]
         if not checkouts_with_due:
             return None
-        soonest = min(checkouts_with_due, key=lambda c: _effective_due(c) or datetime.date.max)
+        soonest = min(
+            checkouts_with_due, key=lambda c: _effective_due(c) or datetime.date.max
+        )
         return _checkout_to_event(soonest)
 
     async def async_get_events(
