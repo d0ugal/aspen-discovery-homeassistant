@@ -5,7 +5,6 @@ from typing import Any
 from urllib.parse import urlparse
 
 import voluptuous as vol
-
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 
 from .api import AspenDiscoveryAuthError, AspenDiscoveryClient, AspenDiscoveryConnectionError

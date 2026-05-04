@@ -1,0 +1,14 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "custom_components/aspen_discovery/manifest.json",
+          "jsonpath": "$.version"
+        }
+      ]
+    }
+  }
+}
