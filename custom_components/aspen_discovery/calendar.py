@@ -39,9 +39,7 @@ class AspenDiscoveryCalendar(CoordinatorEntity[AspenDiscoveryCoordinator], Calen
     _attr_has_entity_name = True
     _attr_name = "Due dates"
 
-    def __init__(
-        self, coordinator: AspenDiscoveryCoordinator, entry: ConfigEntry
-    ) -> None:
+    def __init__(self, coordinator: AspenDiscoveryCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_calendar"
         self._attr_device_info = DeviceInfo(
@@ -56,8 +54,7 @@ class AspenDiscoveryCalendar(CoordinatorEntity[AspenDiscoveryCoordinator], Calen
         upcoming = [
             c
             for c in self.coordinator.data.checkouts
-            if c.get("dueDate")
-            and datetime.date.fromtimestamp(int(c["dueDate"])) >= today
+            if c.get("dueDate") and datetime.date.fromtimestamp(int(c["dueDate"])) >= today
         ]
         if not upcoming:
             return None
