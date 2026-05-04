@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/d0ugal/aspen-discovery-homeassistant/compare/v0.0.3...v0.0.4) (2026-05-04)
+
+
+### Bug Fixes
+
+* fall back to AJAX HTML parsing when UserAPI is blocked by IP ([7449c34](https://github.com/d0ugal/aspen-discovery-homeassistant/commit/7449c3457e56d4e2d343141a90cf621a4d874d37))
+
 ## [0.0.3](https://github.com/d0ugal/aspen-discovery-homeassistant/compare/v0.0.2...v0.0.3) (2026-05-04)
 
 
