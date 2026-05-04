@@ -9,7 +9,7 @@
                     "password": "PIN / Password"
                 },
                 "data_description": {
-                    "url": "The base URL of your library catalogue, e.g. https://catalog.yourlibrary.org"
+                    "url": "The base URL of your library catalogue (e.g. your library website address)"
                 }
             }
         },

@@ -1,0 +1,3 @@
+renew_all:
+  name: Renew all checkouts
+  description: Renew all eligible library items across all configured Aspen Discovery accounts.
