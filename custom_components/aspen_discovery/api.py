@@ -47,25 +47,26 @@ class _CheckoutsParser(HTMLParser):
         ad = dict(attrs)
         class_list = ad.get("class", "").split()
 
-        if (
-            tag == "div"
-            and "result" in class_list
-            and "row" in class_list
-            and self._current is None
-        ):
-            self._record_depth = self._depth
-            self._current = {
-                "title": "",
-                "dueDate": None,
-                "overdue": "bg-overdue" in class_list,
-            }
-
-        self._depth += 1
+        if tag == "div":
+            if "result" in class_list and "row" in class_list and self._current is None:
+                self._record_depth = self._depth
+                self._current = {
+                    "title": "",
+                    "dueDate": None,
+                    "overdue": "bg-overdue" in class_list,
+                }
+            # Only track div depth — void elements (input, img) never call handle_endtag
+            # so including them would permanently drift the counter.
+            self._depth += 1
 
         if self._current is None:
             return
 
-        if tag in ("a", "span") and "result-title" in class_list and "notranslate" in class_list:
+        if (
+            tag in ("a", "span")
+            and "result-title" in class_list
+            and "notranslate" in class_list
+        ):
             self._in_title = True
 
         if tag == "div" and "result-label" in class_list:
@@ -80,9 +81,9 @@ class _CheckoutsParser(HTMLParser):
         if tag in ("a", "span"):
             self._in_title = False
 
-        self._depth -= 1
-
         if tag == "div":
+            self._depth -= 1
+
             if self._in_label:
                 self._in_label = False
             if self._in_due_value:
@@ -110,7 +111,11 @@ class _CheckoutsParser(HTMLParser):
         if self._in_label:
             self._after_due_label = stripped.lower() == "due"
 
-        if self._in_due_value and self._current is not None and not self._current["dueDate"]:
+        if (
+            self._in_due_value
+            and self._current is not None
+            and not self._current["dueDate"]
+        ):
             # Smarty date_format default: '%b %e, %Y' → "May  4, 2026" (space-padded day)
             date_str = " ".join(stripped.split())
             try:
@@ -211,7 +216,9 @@ class AspenDiscoveryClient:
                 },
             ) as resp:
                 if resp.status in (403, 401):
-                    _LOGGER.debug("UserAPI blocked (status %s), falling back to AJAX", resp.status)
+                    _LOGGER.debug(
+                        "UserAPI blocked (status %s), falling back to AJAX", resp.status
+                    )
                     return None
                 resp.raise_for_status()
                 data = await resp.json(content_type=None)
