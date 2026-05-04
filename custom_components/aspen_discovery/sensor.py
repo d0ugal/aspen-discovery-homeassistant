@@ -72,8 +72,7 @@ async def async_setup_entry(
 ) -> None:
     coordinator: AspenDiscoveryCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        AspenDiscoverySensor(coordinator, entry, description)
-        for description in SENSOR_DESCRIPTIONS
+        AspenDiscoverySensor(coordinator, entry, description) for description in SENSOR_DESCRIPTIONS
     )
 
 

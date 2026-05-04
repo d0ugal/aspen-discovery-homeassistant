@@ -32,11 +32,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     result = await coord.client.renew_all()
                     _LOGGER.info(
                         "Renew all for %s: %s",
-                        (
-                            coord.config_entry.title
-                            if hasattr(coord, "config_entry")
-                            else "library"
-                        ),
+                        (coord.config_entry.title if hasattr(coord, "config_entry") else "library"),
                         result.get("renewalMessage", result),
                     )
                 except AspenDiscoveryConnectionError as err:
