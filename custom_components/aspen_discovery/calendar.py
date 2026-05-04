@@ -43,15 +43,11 @@ def _checkout_to_event(checkout: dict) -> CalendarEvent | None:
     )
 
 
-class AspenDiscoveryCalendar(
-    CoordinatorEntity[AspenDiscoveryCoordinator], CalendarEntity
-):
+class AspenDiscoveryCalendar(CoordinatorEntity[AspenDiscoveryCoordinator], CalendarEntity):
     _attr_has_entity_name = True
     _attr_name = "Due dates"
 
-    def __init__(
-        self, coordinator: AspenDiscoveryCoordinator, entry: ConfigEntry
-    ) -> None:
+    def __init__(self, coordinator: AspenDiscoveryCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.entry_id}_calendar"
         self._attr_device_info = DeviceInfo(
