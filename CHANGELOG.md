@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/d0ugal/aspen-discovery-homeassistant/compare/v0.0.4...v0.0.5) (2026-05-04)
+
+
+### Bug Fixes
+
+* only track div depth in checkout HTML parser to avoid void element drift ([04a5d28](https://github.com/d0ugal/aspen-discovery-homeassistant/commit/04a5d28e2c3caccbceff51c11189d65edac994e6))
+
 ## [0.0.4](https://github.com/d0ugal/aspen-discovery-homeassistant/compare/v0.0.3...v0.0.4) (2026-05-04)
 
 
